@@ -10,8 +10,8 @@ const roboto = Roboto({
 });
 
 export const metadata: Metadata = {
-  title: 'Next.js + MUI 7',
-  description: 'Next.js app with Material-UI 7',
+  title: 'Pawcala - Mancala Game',
+  description: 'Play Mancala with adorable paw animations!',
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

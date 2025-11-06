@@ -3,6 +3,7 @@ import nextVitals from 'eslint-config-next/core-web-vitals';
 import nextTs from 'eslint-config-next/typescript';
 import prettierPlugin from 'eslint-plugin-prettier';
 import prettierConfig from 'eslint-config-prettier';
+import reactHooksExtra from 'eslint-plugin-react-hooks-extra';
 
 const eslintConfig = defineConfig([
   ...nextVitals,
@@ -18,6 +19,7 @@ const eslintConfig = defineConfig([
   {
     plugins: {
       prettier: prettierPlugin,
+      'react-hooks-extra': reactHooksExtra,
     },
     rules: {
       'prettier/prettier': [
@@ -33,6 +35,9 @@ const eslintConfig = defineConfig([
           endOfLine: 'lf',
         },
       ],
+      'react-hooks-extra/no-redundant-custom-hook': 'warn',
+      'react-hooks-extra/no-direct-set-state-in-use-effect': 'warn',
+      'react-hooks-extra/prefer-use-state-lazy-initialization': 'warn',
     },
   },
   prettierConfig,
