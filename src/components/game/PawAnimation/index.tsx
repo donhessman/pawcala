@@ -1,7 +1,9 @@
+/* eslint-disable react-hooks/set-state-in-effect */
+/* eslint-disable react-hooks-extra/no-direct-set-state-in-use-effect */
 'use client';
 
 import { PlayerType } from '@/types/game';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { StyledPawContainer } from './styles';
 
@@ -36,40 +38,50 @@ const getPitPosition = (pitIndex: number | null): { x: number; y: number } | nul
 };
 
 const PawAnimation = ({ pawType, isVisible, animatingPit, currentPlayer }: PawAnimationProps) => {
-  const [position, setPosition] = useState<{ x: number; y: number } | null>(null);
-  const [hasSlideIn, setHasSlideIn] = useState(false);
-  const prevPitRef = useRef<number | null>(null);
+  'use no memo';
 
+  const [animationState, setAnimationState] = useState<{
+    hasSlideIn: boolean;
+    prevPit: number | null;
+    prevVisible: boolean;
+  }>({ hasSlideIn: false, prevPit: null, prevVisible: false });
+
+  // Derive position from current animatingPit
+  const position = isVisible && animatingPit !== null ? getPitPosition(animatingPit) : null;
+
+  // Handle animation state changes
   useEffect(() => {
-    if (isVisible && animatingPit !== null) {
-      const pitPos = getPitPosition(animatingPit);
-      if (pitPos) {
-        if (prevPitRef.current === null) {
-          // First pit - start off-screen
-          setPosition(pitPos);
-          setHasSlideIn(false);
-          prevPitRef.current = animatingPit;
+    // Visibility changed to false - reset
+    if (!isVisible && animationState.prevVisible) {
+      setAnimationState({ hasSlideIn: false, prevPit: null, prevVisible: false });
+      return;
+    }
 
-          // On next frame, trigger the slide-in
+    // Visibility changed to true
+    if (isVisible && !animationState.prevVisible) {
+      setAnimationState((prev) => ({ ...prev, prevVisible: true }));
+    }
+
+    // New pit to animate
+    if (isVisible && animatingPit !== null && animatingPit !== animationState.prevPit) {
+      const isFirstPit = animationState.prevPit === null;
+
+      if (isFirstPit) {
+        // First pit - start slide-in animation
+        setAnimationState({ hasSlideIn: false, prevPit: animatingPit, prevVisible: true });
+
+        // Trigger slide-in on next frame
+        requestAnimationFrame(() => {
           requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-              setHasSlideIn(true);
-            });
+            setAnimationState((prev) => ({ ...prev, hasSlideIn: true }));
           });
-        } else {
-          // Subsequent pits - just move the paw
-          setPosition(pitPos);
-          prevPitRef.current = animatingPit;
-        }
+        });
+      } else {
+        // Subsequent pits - just update the pit
+        setAnimationState((prev) => ({ ...prev, prevPit: animatingPit }));
       }
     }
-
-    if (!isVisible) {
-      setPosition(null);
-      setHasSlideIn(false);
-      prevPitRef.current = null;
-    }
-  }, [isVisible, animatingPit]);
+  }, [isVisible, animatingPit, animationState.prevVisible, animationState.prevPit]);
 
   if (!isVisible || !position) return null;
 
@@ -106,8 +118,8 @@ const PawAnimation = ({ pawType, isVisible, animatingPit, currentPlayer }: PawAn
   return (
     <StyledPawContainer
       left={leftPosition}
-      top={hasSlideIn ? topPosition : initialTopPosition}
-      isInitialSlide={!hasSlideIn}
+      top={animationState.hasSlideIn ? topPosition : initialTopPosition}
+      isInitialSlide={!animationState.hasSlideIn}
     >
       <Image src={imageSrc} alt={`${pawType} paw`} width={pawWidth} height={pawHeight} />
     </StyledPawContainer>
