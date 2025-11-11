@@ -15,9 +15,10 @@ export const StyledPitPaper = styled(Paper, {
     prop !== 'isHighlighted' &&
     prop !== 'isAnimating',
 })<StyledPitPaperProps>(({ theme, isStore, isClickable, isHighlighted, isAnimating }) => ({
-  width: isStore ? 120 : 100,
-  height: isStore ? 280 : 100,
-  borderRadius: isStore ? theme.spacing(8) : '50%',
+  // Mobile-first sizing
+  width: isStore ? 50 : 45,
+  height: isStore ? 120 : 45,
+  borderRadius: isStore ? theme.spacing(3) : '50%',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
@@ -28,7 +29,7 @@ export const StyledPitPaper = styled(Paper, {
     : isStore
       ? theme.palette.primary.light
       : theme.palette.background.paper,
-  border: `${isHighlighted || isAnimating ? 4 : 3}px solid`,
+  border: `${isHighlighted || isAnimating ? 3 : 2}px solid`,
   borderColor: isAnimating
     ? theme.palette.secondary.main
     : isHighlighted
@@ -45,6 +46,26 @@ export const StyledPitPaper = styled(Paper, {
           borderColor: theme.palette.secondary.main,
         }
       : {},
+  // Tablet sizing
+  [theme.breakpoints.up('sm')]: {
+    width: isStore ? 80 : 70,
+    height: isStore ? 180 : 70,
+    borderRadius: isStore ? theme.spacing(5) : '50%',
+    border: `${isHighlighted || isAnimating ? 3 : 2}px solid`,
+  },
+  // Desktop sizing
+  [theme.breakpoints.up('md')]: {
+    width: isStore ? 100 : 85,
+    height: isStore ? 220 : 85,
+    borderRadius: isStore ? theme.spacing(6) : '50%',
+    border: `${isHighlighted || isAnimating ? 4 : 3}px solid`,
+  },
+  // Large desktop sizing
+  [theme.breakpoints.up('lg')]: {
+    width: isStore ? 120 : 100,
+    height: isStore ? 280 : 100,
+    borderRadius: isStore ? theme.spacing(8) : '50%',
+  },
 }));
 
 interface StyledStoneCountProps {
@@ -56,13 +77,32 @@ export const StyledStoneCount = styled(Typography, {
 })<StyledStoneCountProps>(({ theme, isStore }) => ({
   variant: isStore ? 'h3' : 'h4',
   fontWeight: 'bold',
+  fontSize: isStore ? '1.25rem' : '1rem',
   color: isStore ? theme.palette.primary.contrastText : theme.palette.text.primary,
+  [theme.breakpoints.up('sm')]: {
+    fontSize: isStore ? '1.75rem' : '1.5rem',
+  },
+  [theme.breakpoints.up('md')]: {
+    fontSize: isStore ? '2.5rem' : '2rem',
+  },
+  [theme.breakpoints.up('lg')]: {
+    fontSize: isStore ? '3rem' : '2.125rem',
+  },
 }));
 
 export const StyledPlayerLabel = styled(Typography)(({ theme }) => ({
   variant: 'body2',
+  fontSize: '0.625rem',
   color: theme.palette.primary.contrastText,
-  marginTop: theme.spacing(1),
+  marginTop: theme.spacing(0.5),
   textTransform: 'uppercase',
   fontWeight: 'bold',
+  [theme.breakpoints.up('sm')]: {
+    fontSize: '0.75rem',
+    marginTop: theme.spacing(0.75),
+  },
+  [theme.breakpoints.up('md')]: {
+    fontSize: '0.875rem',
+    marginTop: theme.spacing(1),
+  },
 }));
