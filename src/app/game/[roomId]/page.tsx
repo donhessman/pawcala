@@ -1,14 +1,14 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
+import Link from 'next/link';
 import { Box, Container, Typography, Paper, Alert } from '@mui/material';
 import { createClient } from '@/utils/supabase/client';
 import { createInitialBoard, makeMove } from '@/utils/gameLogic';
 import {
   GameState,
   Player,
-  PlayerType,
   BroadcastMovePayload,
   PlayerInfo,
   StateRequestPayload,
@@ -22,7 +22,6 @@ import type { RealtimeChannel } from '@supabase/supabase-js';
 
 const GamePage = () => {
   const params = useParams();
-  const router = useRouter();
   const roomId = params.roomId as string;
 
   const [gameState, setGameState] = useState<GameState>(() => ({
@@ -466,9 +465,9 @@ const GamePage = () => {
           {errorMessage || 'Failed to connect to game room'}
         </Alert>
         <Typography variant="body1" textAlign="center">
-          <a href="/" style={{ color: 'inherit' }}>
+          <Link href="/" style={{ color: 'inherit', textDecoration: 'none' }}>
             Return to home
-          </a>
+          </Link>
         </Typography>
       </Container>
     );
@@ -504,7 +503,7 @@ const GamePage = () => {
         {gameState.currentPlayer === localPlayerNumber ? (
           <Alert severity="info">Your turn!</Alert>
         ) : (
-          <Alert severity="warning">Opponent's turn...</Alert>
+          <Alert severity="warning">Opponent&apos;s turn...</Alert>
         )}
       </Box>
 
