@@ -26,10 +26,9 @@ export const StyledBoardContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
+  flexDirection: 'row',
   gap: theme.spacing(1),
-  flexDirection: 'column',
   [theme.breakpoints.up('sm')]: {
-    flexDirection: 'row',
     gap: theme.spacing(2),
   },
   [theme.breakpoints.up('md')]: {
