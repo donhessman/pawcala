@@ -225,15 +225,16 @@ const GamePage = () => {
         });
       })
       .on('presence', { event: 'join' }, ({ newPresences }) => {
-        newPresences.forEach((presence: PlayerPresencePayload) => {
-          const playerKey = `player${presence.playerNumber}` as 'player1' | 'player2';
+        newPresences.forEach((presence) => {
+          const typedPresence = presence as unknown as PlayerPresencePayload;
+          const playerKey = `player${typedPresence.playerNumber}` as 'player1' | 'player2';
           setPlayers((prev) => ({
             ...prev,
             [playerKey]: prev[playerKey]
               ? { ...prev[playerKey]!, online: true }
               : {
-                  id: presence.playerId,
-                  name: presence.playerName,
+                  id: typedPresence.playerId,
+                  name: typedPresence.playerName,
                   type: 'dog',
                   online: true,
                   lastSeen: new Date().toISOString(),
@@ -242,8 +243,9 @@ const GamePage = () => {
         });
       })
       .on('presence', { event: 'leave' }, ({ leftPresences }) => {
-        leftPresences.forEach((presence: PlayerPresencePayload) => {
-          const playerKey = `player${presence.playerNumber}` as 'player1' | 'player2';
+        leftPresences.forEach((presence) => {
+          const typedPresence = presence as unknown as PlayerPresencePayload;
+          const playerKey = `player${typedPresence.playerNumber}` as 'player1' | 'player2';
           setPlayers((prev) => ({
             ...prev,
             [playerKey]: prev[playerKey] ? { ...prev[playerKey]!, online: false } : null,
@@ -482,7 +484,8 @@ const GamePage = () => {
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <Box>
               <Typography variant="body2" color="text.secondary">
-                You are Player {localPlayerNumber} ({gameState[`player${localPlayerNumber}Type`]})
+                You are Player {localPlayerNumber} (
+                {localPlayerNumber === 1 ? gameState.player1Type : gameState.player2Type})
               </Typography>
             </Box>
             {opponent ? (
@@ -501,7 +504,7 @@ const GamePage = () => {
         {gameState.currentPlayer === localPlayerNumber ? (
           <Alert severity="info">Your turn!</Alert>
         ) : (
-          <Alert severity="default">Opponent's turn...</Alert>
+          <Alert severity="warning">Opponent's turn...</Alert>
         )}
       </Box>
 
