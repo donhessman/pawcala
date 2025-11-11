@@ -15,10 +15,10 @@ export const StyledPitPaper = styled(Paper, {
     prop !== 'isHighlighted' &&
     prop !== 'isAnimating',
 })<StyledPitPaperProps>(({ theme, isStore, isClickable, isHighlighted, isAnimating }) => ({
-  // Mobile-first sizing
-  width: isStore ? 50 : 45,
-  height: isStore ? 120 : 45,
-  borderRadius: isStore ? theme.spacing(3) : '50%',
+  // Mobile-first sizing (extra small for narrow screens)
+  width: isStore ? 35 : 32,
+  height: isStore ? 90 : 32,
+  borderRadius: isStore ? theme.spacing(2) : '50%',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
@@ -77,7 +77,7 @@ export const StyledStoneCount = styled(Typography, {
 })<StyledStoneCountProps>(({ theme, isStore }) => ({
   variant: isStore ? 'h3' : 'h4',
   fontWeight: 'bold',
-  fontSize: isStore ? '1.25rem' : '1rem',
+  fontSize: isStore ? '0.875rem' : '0.75rem',
   color: isStore ? theme.palette.primary.contrastText : theme.palette.text.primary,
   [theme.breakpoints.up('sm')]: {
     fontSize: isStore ? '1.75rem' : '1.5rem',
@@ -92,9 +92,9 @@ export const StyledStoneCount = styled(Typography, {
 
 export const StyledPlayerLabel = styled(Typography)(({ theme }) => ({
   variant: 'body2',
-  fontSize: '0.625rem',
+  fontSize: '0.5rem',
   color: theme.palette.primary.contrastText,
-  marginTop: theme.spacing(0.5),
+  marginTop: theme.spacing(0.25),
   textTransform: 'uppercase',
   fontWeight: 'bold',
   [theme.breakpoints.up('sm')]: {

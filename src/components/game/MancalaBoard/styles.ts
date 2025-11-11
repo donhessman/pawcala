@@ -2,9 +2,9 @@ import { styled } from '@mui/material/styles';
 import { Paper, Box, Typography } from '@mui/material';
 
 export const StyledBoardPaper = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(2),
+  padding: theme.spacing(1),
   backgroundColor: theme.palette.background.default,
-  borderRadius: theme.spacing(2),
+  borderRadius: theme.spacing(1.5),
   maxWidth: 1600,
   marginLeft: 'auto',
   marginRight: 'auto',
@@ -43,7 +43,7 @@ export const StyledMainGameArea = styled(Box)(({ theme }) => ({
   flex: 1,
   display: 'flex',
   flexDirection: 'column',
-  gap: theme.spacing(1.5),
+  gap: theme.spacing(0.75),
   width: '100%',
   [theme.breakpoints.up('sm')]: {
     gap: theme.spacing(2),
@@ -66,7 +66,7 @@ export const StyledPlayerName = styled(Typography, {
 })<StyledPlayerNameProps>(({ theme, isCurrentPlayer }) => ({
   variant: 'h6',
   fontWeight: 'bold',
-  fontSize: '0.875rem',
+  fontSize: '0.7rem',
   color: isCurrentPlayer ? theme.palette.secondary.main : theme.palette.text.secondary,
   [theme.breakpoints.up('sm')]: {
     fontSize: '1rem',
@@ -78,7 +78,7 @@ export const StyledPlayerName = styled(Typography, {
 
 export const StyledPitsRow = styled(Box)(({ theme }) => ({
   display: 'flex',
-  gap: theme.spacing(0.75),
+  gap: theme.spacing(0.5),
   justifyContent: 'center',
   flexWrap: 'nowrap',
   [theme.breakpoints.up('sm')]: {
