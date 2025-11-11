@@ -46,3 +46,47 @@ export interface GameNotification {
   message: string;
   severity: 'success' | 'info' | 'warning' | 'error';
 }
+
+// Multiplayer extensions
+export interface PlayerInfo {
+  id: string;
+  name: string;
+  type: PlayerType;
+  online: boolean;
+  lastSeen: string;
+}
+
+export interface MultiplayerGameState extends GameState {
+  roomId: string;
+  localPlayerNumber: Player | null;
+  players: {
+    player1: PlayerInfo | null;
+    player2: PlayerInfo | null;
+  };
+  createdAt: string;
+}
+
+export interface BroadcastMovePayload {
+  type: 'move';
+  pitIndex: number;
+  player: Player;
+  moveResult: MoveResult;
+  timestamp: string;
+}
+
+export interface StateRequestPayload {
+  type: 'state_request';
+  requesterId: string;
+  timestamp: string;
+}
+
+export interface StateSyncPayload {
+  type: 'state_sync';
+  gameState: {
+    board: number[];
+    currentPlayer: Player;
+    gameOver: boolean;
+    winner: Player | null;
+  };
+  timestamp: string;
+}
