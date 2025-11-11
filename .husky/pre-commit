@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+
+# Load nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+
+# Run lint-staged for linting and formatting
+npx lint-staged
+
+# Run TypeScript type checking
+npm run typecheck || {
+  echo "TypeScript type check failed. Commit aborted."
+  exit 1
+}
