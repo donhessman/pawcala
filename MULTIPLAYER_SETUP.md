@@ -5,6 +5,7 @@ This guide explains how to set up online multiplayer for Pawcala using Supabase 
 ## Overview
 
 Pawcala uses **Supabase Realtime Broadcast channels** for real-time multiplayer gameplay. This provides:
+
 - Low-latency WebSocket connections (< 100ms)
 - Direct browser-to-Supabase communication (no custom backend server needed)
 - Presence tracking for online/offline status
@@ -42,11 +43,13 @@ These are safe to use in your client-side code.
 ## Step 3: Configure Environment Variables
 
 1. Copy the example environment file:
+
    ```bash
    cp .env.local.example .env.local
    ```
 
 2. Open `.env.local` and fill in your Supabase credentials:
+
    ```env
    NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
    NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_public_key
@@ -65,11 +68,13 @@ Supabase Realtime is enabled by default for new projects. To verify:
 ## Step 5: Test Locally
 
 1. Install dependencies (if not already done):
+
    ```bash
    npm install
    ```
 
 2. Start the development server:
+
    ```bash
    npm run dev
    ```
@@ -161,6 +166,7 @@ Browser A                    Supabase Realtime                    Browser B
 **Cause**: Invalid Supabase credentials or Realtime not enabled
 
 **Fix**:
+
 1. Double-check your `.env.local` values
 2. Verify Realtime is enabled in Supabase dashboard
 3. Restart your dev server (`npm run dev`)
@@ -170,6 +176,7 @@ Browser A                    Supabase Realtime                    Browser B
 **Cause**: Two players are already in the room
 
 **Fix**:
+
 - Create a new room code
 - Rooms support exactly 2 players
 
@@ -178,6 +185,7 @@ Browser A                    Supabase Realtime                    Browser B
 **Cause**: Channel subscription issue or network problem
 
 **Fix**:
+
 1. Check browser console for errors
 2. Verify both players are in the same room code
 3. Refresh both browser windows
@@ -188,6 +196,7 @@ Browser A                    Supabase Realtime                    Browser B
 **Cause**: Network latency or region mismatch
 
 **Fix**:
+
 - Choose a Supabase region closer to your users
 - Check your internet connection
 - Typical latency: 50-200ms depending on distance to Supabase servers
@@ -195,12 +204,14 @@ Browser A                    Supabase Realtime                    Browser B
 ## Free Tier Limits
 
 Supabase Free Tier includes:
+
 - **200 concurrent WebSocket connections** (100 simultaneous games)
 - **500MB database storage** (not used for basic multiplayer)
 - **5GB bandwidth/month**
 - **50,000 monthly active users**
 
 When to upgrade to Pro ($25/month):
+
 - More than 100 concurrent games
 - Need more than 2 active projects
 - Require guaranteed uptime SLA
@@ -212,6 +223,7 @@ By default, games are **not saved** to the database. Moves are only broadcast vi
 To add game persistence (for history, leaderboards, etc.):
 
 1. Create tables in Supabase:
+
    ```sql
    -- In Supabase SQL Editor
    create table game_results (
@@ -251,6 +263,7 @@ To add game persistence (for history, leaderboards, etc.):
 ## Support
 
 If you encounter issues:
+
 1. Check the [Supabase Status Page](https://status.supabase.com/)
 2. Review the browser console for errors
 3. Verify your environment variables are correct
