@@ -1,10 +1,15 @@
 'use client';
 
-import { Typography, Snackbar, Alert } from '@mui/material';
+import { useState } from 'react';
+import { Typography, Snackbar, Alert, Button, Box } from '@mui/material';
 import MancalaBoard from '@/components/game/MancalaBoard';
 import GameControls from '@/components/game/GameControls';
 import PawAnimation from '@/components/game/PawAnimation';
+import GameModeSelector from '@/components/multiplayer/GameModeSelector';
+import RoomCreator from '@/components/multiplayer/RoomCreator';
+import RoomJoiner from '@/components/multiplayer/RoomJoiner';
 import { useGameState } from '@/hooks/useGameState';
+import { GameMode } from '@/types/multiplayer';
 import {
   StyledPageContainer,
   StyledHeader,
@@ -13,7 +18,12 @@ import {
   StyledInstructionsBox,
 } from './page.styles';
 
+type OnlineView = 'menu' | 'create' | 'join';
+
 const Home = () => {
+  const [gameMode, setGameMode] = useState<GameMode | null>(null);
+  const [onlineView, setOnlineView] = useState<OnlineView>('menu');
+
   const {
     gameState,
     isAnimating,
@@ -29,6 +39,76 @@ const Home = () => {
   const currentPawType =
     gameState.currentPlayer === 1 ? gameState.player1Type : gameState.player2Type;
 
+  const handleSelectMode = (mode: GameMode) => {
+    setGameMode(mode);
+    if (mode === 'online') {
+      setOnlineView('menu');
+    }
+  };
+
+  const handleBackToModeSelection = () => {
+    setGameMode(null);
+    setOnlineView('menu');
+  };
+
+  const handleBackToOnlineMenu = () => {
+    setOnlineView('menu');
+  };
+
+  // Show game mode selector if no mode selected
+  if (gameMode === null) {
+    return (
+      <StyledPageContainer maxWidth={false}>
+        <StyledHeader>
+          <StyledTitle variant="h3" component="h1" gutterBottom>
+            🐾 Pawcala 🐾
+          </StyledTitle>
+          <Typography variant="body1" color="text.secondary">
+            A playful twist on the classic Mancala game
+          </Typography>
+        </StyledHeader>
+        <GameModeSelector onSelectMode={handleSelectMode} />
+      </StyledPageContainer>
+    );
+  }
+
+  // Show online multiplayer menu
+  if (gameMode === 'online') {
+    return (
+      <StyledPageContainer maxWidth={false}>
+        <StyledHeader>
+          <StyledTitle variant="h3" component="h1" gutterBottom>
+            🐾 Pawcala 🐾
+          </StyledTitle>
+          <Typography variant="body1" color="text.secondary">
+            Online Multiplayer
+          </Typography>
+        </StyledHeader>
+
+        {onlineView === 'menu' && (
+          <Box sx={{ maxWidth: 500, mx: 'auto' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mb: 3 }}>
+              <Button variant="contained" size="large" onClick={() => setOnlineView('create')}>
+                Create Room
+              </Button>
+              <Button variant="outlined" size="large" onClick={() => setOnlineView('join')}>
+                Join Room
+              </Button>
+            </Box>
+            <Button variant="text" onClick={handleBackToModeSelection} fullWidth>
+              Back to Mode Selection
+            </Button>
+          </Box>
+        )}
+
+        {onlineView === 'create' && <RoomCreator onBack={handleBackToOnlineMenu} />}
+
+        {onlineView === 'join' && <RoomJoiner onBack={handleBackToOnlineMenu} />}
+      </StyledPageContainer>
+    );
+  }
+
+  // Show local game
   return (
     <StyledPageContainer maxWidth={false}>
       <StyledHeader>
@@ -36,8 +116,11 @@ const Home = () => {
           🐾 Pawcala 🐾
         </StyledTitle>
         <Typography variant="body1" color="text.secondary">
-          A playful twist on the classic Mancala game
+          Local Game
         </Typography>
+        <Button variant="text" size="small" onClick={handleBackToModeSelection} sx={{ mt: 1 }}>
+          Change Mode
+        </Button>
       </StyledHeader>
 
       <GameControls gameState={gameState} onReset={resetGame} onSwitchPlayers={switchPlayerTypes} />

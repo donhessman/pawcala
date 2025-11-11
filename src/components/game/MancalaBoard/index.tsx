@@ -16,19 +16,28 @@ import {
 interface MancalaBoardProps {
   gameState: GameState;
   onPitClick: (pitIndex: number) => void;
-  isAnimating: boolean;
-  animatingPit: number | null;
-  getScore: (player: Player) => number;
+  isAnimating?: boolean;
+  animatingPit?: number | null;
+  getScore?: (player: Player) => number;
+  currentPlayer?: Player; // For multiplayer, override current player
 }
 
 const MancalaBoard = ({
   gameState,
   onPitClick,
-  isAnimating,
-  animatingPit,
+  isAnimating = false,
+  animatingPit = null,
   getScore,
+  currentPlayer: propCurrentPlayer,
 }: MancalaBoardProps) => {
-  const { board, currentPlayer, lastMove } = gameState;
+  const { board, currentPlayer: stateCurrentPlayer, lastMove } = gameState;
+  const currentPlayer = propCurrentPlayer ?? stateCurrentPlayer;
+
+  // Default getScore function if not provided
+  const defaultGetScore = (player: Player): number => {
+    return player === 1 ? board[PLAYER_1_STORE] : board[PLAYER_2_STORE];
+  };
+  const scoreGetter = getScore ?? defaultGetScore;
 
   const isClickable = (pitIndex: number): boolean => {
     if (isAnimating) return false;
@@ -73,7 +82,7 @@ const MancalaBoard = ({
               {gameState.player2Type === 'dog' ? 'Dog' : 'Cat'})
             </StyledPlayerName>
             <Typography variant="body2" color="text.secondary">
-              Score: {getScore(2)}
+              Score: {scoreGetter(2)}
             </Typography>
           </StyledPlayerLabel>
 
@@ -118,7 +127,7 @@ const MancalaBoard = ({
               {gameState.player1Type === 'dog' ? 'Dog' : 'Cat'})
             </StyledPlayerName>
             <Typography variant="body2" color="text.secondary">
-              Score: {getScore(1)}
+              Score: {scoreGetter(1)}
             </Typography>
           </StyledPlayerLabel>
         </StyledMainGameArea>
