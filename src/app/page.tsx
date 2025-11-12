@@ -86,16 +86,31 @@ const Home = () => {
         </StyledHeader>
 
         {onlineView === 'menu' && (
-          <Box sx={{ maxWidth: 500, mx: 'auto' }}>
+          <Box sx={{ maxWidth: 500, mx: 'auto', px: 2 }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mb: 3 }}>
-              <Button variant="contained" size="large" onClick={() => setOnlineView('create')}>
+              <Button
+                variant="contained"
+                size="large"
+                onClick={() => setOnlineView('create')}
+                sx={{ fontSize: { xs: '0.875rem', sm: '1rem' } }}
+              >
                 Create Room
               </Button>
-              <Button variant="outlined" size="large" onClick={() => setOnlineView('join')}>
+              <Button
+                variant="outlined"
+                size="large"
+                onClick={() => setOnlineView('join')}
+                sx={{ fontSize: { xs: '0.875rem', sm: '1rem' } }}
+              >
                 Join Room
               </Button>
             </Box>
-            <Button variant="text" onClick={handleBackToModeSelection} fullWidth>
+            <Button
+              variant="text"
+              onClick={handleBackToModeSelection}
+              fullWidth
+              sx={{ fontSize: { xs: '0.875rem', sm: '1rem' } }}
+            >
               Back to Mode Selection
             </Button>
           </Box>
@@ -158,22 +173,22 @@ const Home = () => {
       </Snackbar>
 
       <StyledInstructionsBox>
-        <Typography variant="h6" gutterBottom>
+        <Typography variant="h6" gutterBottom sx={{ fontSize: { xs: '1rem', sm: '1.25rem' } }}>
           How to Play:
         </Typography>
-        <Typography variant="body2" sx={{ mb: 1 }}>
+        <Typography variant="body2" sx={{ mb: 1, fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>
           • Click on one of your pits (bottom row for Player 1, top row for Player 2)
         </Typography>
-        <Typography variant="body2" sx={{ mb: 1 }}>
+        <Typography variant="body2" sx={{ mb: 1, fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>
           • Stones are distributed counter-clockwise, one per pit
         </Typography>
-        <Typography variant="body2" sx={{ mb: 1 }}>
+        <Typography variant="body2" sx={{ mb: 1, fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>
           • Land in your store? Take another turn!
         </Typography>
-        <Typography variant="body2" sx={{ mb: 1 }}>
+        <Typography variant="body2" sx={{ mb: 1, fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>
           • Land in an empty pit on your side? Capture opposite stones!
         </Typography>
-        <Typography variant="body2">
+        <Typography variant="body2" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>
           • Game ends when one side is empty. Most stones wins!
         </Typography>
       </StyledInstructionsBox>
