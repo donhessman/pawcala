@@ -125,15 +125,6 @@ export function useGameState(
 
   // Handle computer moves
   useEffect(() => {
-    console.log('Computer move effect triggered:', {
-      isAnimating,
-      gameOver: gameState.gameOver,
-      computerPlayer: gameState.computerPlayer,
-      currentPlayer: gameState.currentPlayer,
-      computerDifficulty: gameState.computerDifficulty,
-      isComputerTurn: gameState.computerPlayer === gameState.currentPlayer,
-    });
-
     // Check if it's the computer's turn
     if (
       !isAnimating &&
@@ -141,7 +132,6 @@ export function useGameState(
       gameState.computerPlayer === gameState.currentPlayer &&
       gameState.computerDifficulty
     ) {
-      console.log('Computer is making a move...');
       const difficulty = gameState.computerDifficulty;
       const board = gameState.board;
       const player = gameState.currentPlayer;
@@ -149,9 +139,7 @@ export function useGameState(
       // Delay computer move for realism (800ms)
       const timeout = setTimeout(() => {
         try {
-          console.log('Selecting computer move with:', { board, player, difficulty });
           const computerMove = selectComputerMove(board, player, difficulty);
-          console.log('Computer selected move:', computerMove);
           handleMove(computerMove);
         } catch (error) {
           console.error('Computer move error:', error);
@@ -159,10 +147,7 @@ export function useGameState(
         }
       }, 800);
 
-      return () => {
-        console.log('Cleaning up computer move timeout');
-        clearTimeout(timeout);
-      };
+      return () => clearTimeout(timeout);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameState.currentPlayer, gameState.computerPlayer, isAnimating, gameState.gameOver]);
