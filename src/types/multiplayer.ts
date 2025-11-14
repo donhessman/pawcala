@@ -23,4 +23,4 @@ export interface PlayerPresencePayload {
   online: boolean;
 }
 
-export type GameMode = 'local' | 'online';
+export type GameMode = 'local' | 'online' | 'computer';

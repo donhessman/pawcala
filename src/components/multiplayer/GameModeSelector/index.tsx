@@ -23,6 +23,15 @@ const GameModeSelector = ({ onSelectMode }: GameModeSelectorProps) => {
 
         <Box sx={{ my: 1, borderBottom: 1, borderColor: 'divider' }} />
 
+        <Button variant="contained" size="large" onClick={() => onSelectMode('computer')} fullWidth>
+          Play vs Computer
+        </Button>
+        <Typography variant="body2" color="text.secondary" textAlign="center">
+          Challenge the computer opponent
+        </Typography>
+
+        <Box sx={{ my: 1, borderBottom: 1, borderColor: 'divider' }} />
+
         <Button variant="outlined" size="large" onClick={() => onSelectMode('online')} fullWidth>
           Online Multiplayer
         </Button>
