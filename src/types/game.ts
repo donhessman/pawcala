@@ -2,6 +2,8 @@ export type Player = 1 | 2;
 
 export type PlayerType = 'dog' | 'cat';
 
+export type ComputerDifficulty = 'easy' | 'medium' | 'hard';
+
 export interface GameState {
   board: number[]; // 14 positions: [P2-pits (6), P2-store, P1-pits (6), P1-store]
   currentPlayer: Player;
@@ -13,6 +15,8 @@ export interface GameState {
     pitIndex: number;
     player: Player;
   } | null;
+  computerPlayer?: Player; // Which player is computer-controlled (if any)
+  computerDifficulty?: ComputerDifficulty; // Difficulty level for computer player
 }
 
 export interface AnimationState {

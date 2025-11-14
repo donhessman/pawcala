@@ -8,8 +8,10 @@ import PawAnimation from '@/components/game/PawAnimation';
 import GameModeSelector from '@/components/multiplayer/GameModeSelector';
 import RoomCreator from '@/components/multiplayer/RoomCreator';
 import RoomJoiner from '@/components/multiplayer/RoomJoiner';
+import ComputerDifficultySelector from '@/components/game/ComputerDifficultySelector';
 import { useGameState } from '@/hooks/useGameState';
 import { GameMode } from '@/types/multiplayer';
+import { ComputerDifficulty } from '@/types/game';
 import {
   StyledPageContainer,
   StyledHeader,
@@ -23,6 +25,7 @@ type OnlineView = 'menu' | 'create' | 'join';
 const Home = () => {
   const [gameMode, setGameMode] = useState<GameMode | null>(null);
   const [onlineView, setOnlineView] = useState<OnlineView>('menu');
+  const [computerDifficulty, setComputerDifficulty] = useState<ComputerDifficulty | null>(null);
 
   const {
     gameState,
@@ -34,7 +37,10 @@ const Home = () => {
     switchPlayerTypes,
     getScore,
     closeNotification,
-  } = useGameState();
+  } = useGameState(
+    gameMode === 'computer' && computerDifficulty ? 2 : undefined,
+    gameMode === 'computer' && computerDifficulty ? computerDifficulty : undefined
+  );
 
   const currentPawType =
     gameState.currentPlayer === 1 ? gameState.player1Type : gameState.player2Type;
@@ -49,10 +55,19 @@ const Home = () => {
   const handleBackToModeSelection = () => {
     setGameMode(null);
     setOnlineView('menu');
+    setComputerDifficulty(null);
   };
 
   const handleBackToOnlineMenu = () => {
     setOnlineView('menu');
+  };
+
+  const handleSelectDifficulty = (difficulty: ComputerDifficulty) => {
+    setComputerDifficulty(difficulty);
+  };
+
+  const handleBackToDifficultySelection = () => {
+    setComputerDifficulty(null);
   };
 
   // Show game mode selector if no mode selected
@@ -68,6 +83,26 @@ const Home = () => {
           </Typography>
         </StyledHeader>
         <GameModeSelector onSelectMode={handleSelectMode} />
+      </StyledPageContainer>
+    );
+  }
+
+  // Show difficulty selector for computer mode
+  if (gameMode === 'computer' && computerDifficulty === null) {
+    return (
+      <StyledPageContainer maxWidth={false}>
+        <StyledHeader>
+          <StyledTitle variant="h3" component="h1" gutterBottom>
+            🐾 Pawcala 🐾
+          </StyledTitle>
+          <Typography variant="body1" color="text.secondary">
+            Play vs Computer
+          </Typography>
+        </StyledHeader>
+        <ComputerDifficultySelector
+          onSelectDifficulty={handleSelectDifficulty}
+          onBack={handleBackToModeSelection}
+        />
       </StyledPageContainer>
     );
   }
@@ -123,7 +158,9 @@ const Home = () => {
     );
   }
 
-  // Show local game
+  // Show local or computer game
+  const gameTitle = gameMode === 'computer' ? `vs Computer (${computerDifficulty})` : 'Local Game';
+
   return (
     <StyledPageContainer maxWidth={false}>
       <StyledHeader>
@@ -131,10 +168,17 @@ const Home = () => {
           🐾 Pawcala 🐾
         </StyledTitle>
         <Typography variant="body1" color="text.secondary">
-          Local Game
+          {gameTitle}
         </Typography>
-        <Button variant="text" size="small" onClick={handleBackToModeSelection} sx={{ mt: 1 }}>
-          Change Mode
+        <Button
+          variant="text"
+          size="small"
+          onClick={
+            gameMode === 'computer' ? handleBackToDifficultySelection : handleBackToModeSelection
+          }
+          sx={{ mt: 1 }}
+        >
+          {gameMode === 'computer' ? 'Change Difficulty' : 'Change Mode'}
         </Button>
       </StyledHeader>
 

@@ -1,10 +1,14 @@
 'use client';
 
-import { useState, useCallback } from 'react';
-import { GameState, Player, GameNotification } from '@/types/game';
+import { useState, useCallback, useEffect } from 'react';
+import { GameState, Player, GameNotification, ComputerDifficulty } from '@/types/game';
 import { createInitialBoard, makeMove, isValidMove, getPlayerStore } from '@/utils/gameLogic';
+import { selectComputerMove } from '@/utils/computerPlayer';
 
-export function useGameState() {
+export function useGameState(
+  initialComputerPlayer?: Player,
+  initialComputerDifficulty?: ComputerDifficulty
+) {
   const [gameState, setGameState] = useState<GameState>(() => ({
     board: createInitialBoard(),
     currentPlayer: 1,
@@ -13,7 +17,18 @@ export function useGameState() {
     gameOver: false,
     winner: null,
     lastMove: null,
+    computerPlayer: initialComputerPlayer,
+    computerDifficulty: initialComputerDifficulty,
   }));
+
+  // Update computer settings when they change
+  useEffect(() => {
+    setGameState((prev) => ({
+      ...prev,
+      computerPlayer: initialComputerPlayer,
+      computerDifficulty: initialComputerDifficulty,
+    }));
+  }, [initialComputerPlayer, initialComputerDifficulty]);
 
   const [isAnimating, setIsAnimating] = useState(false);
   const [animatingPit, setAnimatingPit] = useState<number | null>(null);
@@ -108,6 +123,35 @@ export function useGameState() {
     [gameState, isAnimating]
   );
 
+  // Handle computer moves
+  useEffect(() => {
+    // Check if it's the computer's turn
+    if (
+      !isAnimating &&
+      !gameState.gameOver &&
+      gameState.computerPlayer === gameState.currentPlayer &&
+      gameState.computerDifficulty
+    ) {
+      const difficulty = gameState.computerDifficulty;
+      const board = gameState.board;
+      const player = gameState.currentPlayer;
+
+      // Delay computer move for realism (800ms)
+      const timeout = setTimeout(() => {
+        try {
+          const computerMove = selectComputerMove(board, player, difficulty);
+          handleMove(computerMove);
+        } catch (error) {
+          console.error('Computer move error:', error);
+          // If computer can't move, game is likely over
+        }
+      }, 800);
+
+      return () => clearTimeout(timeout);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gameState.currentPlayer, gameState.computerPlayer, isAnimating, gameState.gameOver]);
+
   const resetGame = useCallback(() => {
     setGameState({
       board: createInitialBoard(),
@@ -117,11 +161,18 @@ export function useGameState() {
       gameOver: false,
       winner: null,
       lastMove: null,
+      computerPlayer: gameState.computerPlayer,
+      computerDifficulty: gameState.computerDifficulty,
     });
     setIsAnimating(false);
     setAnimatingPit(null);
     setNotification(null);
-  }, [gameState.player1Type, gameState.player2Type]);
+  }, [
+    gameState.player1Type,
+    gameState.player2Type,
+    gameState.computerPlayer,
+    gameState.computerDifficulty,
+  ]);
 
   const switchPlayerTypes = useCallback(() => {
     setGameState((prev) => ({
