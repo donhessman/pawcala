@@ -5,9 +5,10 @@ import { GameMode } from '@/types/multiplayer';
 
 interface GameModeSelectorProps {
   onSelectMode: (mode: GameMode) => void;
+  onlineEnabled?: boolean;
 }
 
-const GameModeSelector = ({ onSelectMode }: GameModeSelectorProps) => {
+const GameModeSelector = ({ onSelectMode, onlineEnabled = true }: GameModeSelectorProps) => {
   return (
     <Paper sx={{ p: 4, maxWidth: 500, mx: 'auto' }}>
       <Typography variant="h5" component="h2" gutterBottom textAlign="center">
@@ -30,14 +31,23 @@ const GameModeSelector = ({ onSelectMode }: GameModeSelectorProps) => {
           Challenge the computer opponent
         </Typography>
 
-        <Box sx={{ my: 1, borderBottom: 1, borderColor: 'divider' }} />
+        {onlineEnabled && (
+          <>
+            <Box sx={{ my: 1, borderBottom: 1, borderColor: 'divider' }} />
 
-        <Button variant="outlined" size="large" onClick={() => onSelectMode('online')} fullWidth>
-          Online Multiplayer
-        </Button>
-        <Typography variant="body2" color="text.secondary" textAlign="center">
-          Play against someone online
-        </Typography>
+            <Button
+              variant="outlined"
+              size="large"
+              onClick={() => onSelectMode('online')}
+              fullWidth
+            >
+              Online Multiplayer
+            </Button>
+            <Typography variant="body2" color="text.secondary" textAlign="center">
+              Play against someone online
+            </Typography>
+          </>
+        )}
       </Box>
     </Paper>
   );

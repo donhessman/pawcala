@@ -18,9 +18,10 @@ import { JoinRoomPayload, PlayerPresencePayload } from '@/types/multiplayer';
 import { generatePlayerId } from '@/utils/roomUtils';
 import MancalaBoard from '@/components/game/MancalaBoard';
 import PawAnimation from '@/components/game/PawAnimation';
+import { ONLINE_MULTIPLAYER_ENABLED } from '@/config/features';
 import type { RealtimeChannel } from '@supabase/supabase-js';
 
-const GamePage = () => {
+const OnlineGame = () => {
   const params = useParams();
   const roomId = params.roomId as string;
 
@@ -538,6 +539,26 @@ const GamePage = () => {
       )}
     </Container>
   );
+};
+
+const GamePage = () => {
+  if (!ONLINE_MULTIPLAYER_ENABLED) {
+    return (
+      <Container maxWidth="sm" sx={{ py: 4 }}>
+        <Alert severity="info" sx={{ mb: 2 }}>
+          Online multiplayer is temporarily unavailable. You can still play locally or against the
+          computer.
+        </Alert>
+        <Typography variant="body1" textAlign="center">
+          <Link href="/" style={{ color: 'inherit', textDecoration: 'none' }}>
+            Return to home
+          </Link>
+        </Typography>
+      </Container>
+    );
+  }
+
+  return <OnlineGame />;
 };
 
 export default GamePage;
