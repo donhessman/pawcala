@@ -8,7 +8,8 @@ A delightful Mancala game with adorable paw animations! Watch as cute dog and ca
 
 - **Adorable Animations**: Real paw images (dog and cat) animate across the board as stones are distributed
 - **Classic Mancala Gameplay**: Full implementation of traditional Mancala rules including captures and extra turns
-- **Online Multiplayer**: Play against friends online using Supabase Realtime with WebSocket connections
+- **Online Multiplayer** (temporarily disabled): code is kept behind a feature flag; see [docs/online-multiplayer-restore-plan.md](./docs/online-multiplayer-restore-plan.md)
+- **Play vs Computer**: Three difficulty levels
 - **Local Multiplayer**: Play on the same device with hot-seat gameplay
 - **Beautiful UI**: Built with Material-UI (MUI) and styled with Emotion for a polished, responsive design
 - **Switchable Players**: Choose which player is the dog or cat
@@ -21,7 +22,7 @@ A delightful Mancala game with adorable paw animations! Watch as cute dog and ca
 - **Language**: TypeScript
 - **UI Library**: [Material-UI v7](https://mui.com) (MUI)
 - **Styling**: Emotion (CSS-in-JS)
-- **Real-time**: [Supabase Realtime](https://supabase.com) for WebSocket-based multiplayer
+- **Real-time** (currently disabled): Supabase Realtime, to be replaced; see the restore plan
 - **Testing**: Vitest + React Testing Library
 - **Linting**: ESLint with Prettier
 - **Optimizations**: React Compiler enabled
@@ -49,16 +50,9 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) to play the game locally.
 
-### Multiplayer Setup (Optional)
+### Online Multiplayer (disabled)
 
-To enable online multiplayer, you'll need a Supabase account:
-
-1. Create a free Supabase project at [supabase.com](https://supabase.com)
-2. Copy `.env.local.example` to `.env.local`
-3. Fill in your Supabase credentials
-4. See [MULTIPLAYER_SETUP.md](./MULTIPLAYER_SETUP.md) for detailed instructions
-
-**Note**: Local multiplayer works without any setup!
+Online multiplayer is turned off and the Supabase project it used is being retired. The code is still in the repo behind `NEXT_PUBLIC_ENABLE_ONLINE_MULTIPLAYER` (default off). Local and vs-computer modes need no setup. See [docs/online-multiplayer-restore-plan.md](./docs/online-multiplayer-restore-plan.md) for how to bring it back.
 
 ## Available Scripts
 

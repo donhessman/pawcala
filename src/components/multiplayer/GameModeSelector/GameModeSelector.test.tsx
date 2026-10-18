@@ -46,4 +46,11 @@ describe('GameModeSelector', () => {
     expect(mockOnSelectMode).toHaveBeenCalledTimes(1);
     expect(mockOnSelectMode).toHaveBeenCalledWith('online');
   });
+
+  it('should hide the online multiplayer option when onlineEnabled is false', () => {
+    render(<GameModeSelector onSelectMode={vi.fn()} onlineEnabled={false} />);
+
+    expect(screen.getByRole('button', { name: /local game/i })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /online multiplayer/i })).not.toBeInTheDocument();
+  });
 });

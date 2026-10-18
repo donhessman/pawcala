@@ -1,3 +1,5 @@
+> **Status: disabled.** Online multiplayer is behind the `NEXT_PUBLIC_ENABLE_ONLINE_MULTIPLAYER` flag (off by default) and the Supabase project described below is being retired. This guide is kept for reference only. See [docs/online-multiplayer-restore-plan.md](./docs/online-multiplayer-restore-plan.md) for the current plan.
+
 # Multiplayer Setup Guide
 
 This guide explains how to set up online multiplayer for Pawcala using Supabase Realtime.

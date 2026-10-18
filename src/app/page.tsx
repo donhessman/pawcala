@@ -10,6 +10,7 @@ import RoomCreator from '@/components/multiplayer/RoomCreator';
 import RoomJoiner from '@/components/multiplayer/RoomJoiner';
 import ComputerDifficultySelector from '@/components/game/ComputerDifficultySelector';
 import { useGameState } from '@/hooks/useGameState';
+import { ONLINE_MULTIPLAYER_ENABLED } from '@/config/features';
 import { GameMode } from '@/types/multiplayer';
 import { ComputerDifficulty } from '@/types/game';
 import {
@@ -82,7 +83,10 @@ const Home = () => {
             A playful twist on the classic Mancala game
           </Typography>
         </StyledHeader>
-        <GameModeSelector onSelectMode={handleSelectMode} />
+        <GameModeSelector
+          onSelectMode={handleSelectMode}
+          onlineEnabled={ONLINE_MULTIPLAYER_ENABLED}
+        />
       </StyledPageContainer>
     );
   }
